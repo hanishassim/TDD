@@ -10,7 +10,7 @@ import UIKit
 public class DetailViewController: UIViewController {
     lazy var tableView: UITableView = {
         let table = UITableView()
-        table.backgroundColor = .gray
+        table.backgroundColor = .lightGray
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
