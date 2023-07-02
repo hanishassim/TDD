@@ -21,7 +21,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Build and test
         run: |
-          cd TDD
           xcodebuild clean test -workspace TDD.xcworkspace -scheme TDD -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
         env: 
          destination: ${{ matrix.destination }}
