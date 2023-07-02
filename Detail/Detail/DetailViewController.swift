@@ -15,9 +15,10 @@ public class DetailViewController: UIViewController {
         return table
     }()
     
+    private let reuseIdentifier = "Cell"
     private var data = [String]()
     
-    convenience init(data: [String]) {
+    public convenience init(data: [String]) {
         self.init()
         
         self.data = data
@@ -45,6 +46,8 @@ public class DetailViewController: UIViewController {
     
     private func setupListeners() {
         tableView.dataSource = self
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
     }
     
     public func popBack() {
@@ -58,6 +61,13 @@ extension DetailViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        
+        var content = cell.defaultContentConfiguration()
+        content.text = data[indexPath.row]
+        
+        cell.contentConfiguration = content
+        
+        return cell
     }
 }

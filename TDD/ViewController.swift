@@ -102,7 +102,7 @@ class ViewController: UIViewController {
     }
     
     private func handleRouteToNextScreen() {
-        let vc = DetailViewController()
+        let vc = DetailViewController(data: ["A", "B"])
         
         navigationController?.pushViewController(vc, animated: true)
     }

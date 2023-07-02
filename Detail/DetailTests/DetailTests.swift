@@ -17,6 +17,14 @@ final class DetailTests: XCTestCase {
         XCTAssertEqual(makeSUT().tableView.numberOfRows(inSection: 0), 0)
     }
     
+    func test_viewDidLoad_tableView_withData() {
+        let sut = DetailViewController(data: ["A", "B", "C", "D"])
+        sut.loadViewIfNeeded()
+        
+        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 0), 4)
+        XCTAssertEqual(sut.tableView.title(at: 2), "C")
+    }
+    
     // MARK: Helpers
     
     private func makeSUT() -> DetailViewController {
@@ -32,6 +40,8 @@ private extension UITableView {
     }
     
     func title(at row: Int) -> String? {
-        return cell(at: row)?.textLabel?.text
+        let contentConfig = cell(at: row)?.contentConfiguration as? UIListContentConfiguration
+        
+        return contentConfig?.text ?? nil
     }
 }
