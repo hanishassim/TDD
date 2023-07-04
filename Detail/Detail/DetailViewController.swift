@@ -7,6 +7,8 @@
 
 import UIKit
 
+public typealias selection = (([String]) -> Void)?
+
 public class DetailViewController: UIViewController {
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -17,11 +19,13 @@ public class DetailViewController: UIViewController {
     
     private let reuseIdentifier = "Cell"
     private var data = [String]()
+    private var selection: selection = nil
     
-    public convenience init(data: [String]) {
+    public convenience init(data: [String], selection: selection = nil) {
         self.init()
         
         self.data = data
+        self.selection = selection
     }
     
     public override func viewDidLoad() {
@@ -46,12 +50,19 @@ public class DetailViewController: UIViewController {
     
     private func setupListeners() {
         tableView.dataSource = self
+        tableView.delegate = self
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
     }
     
     public func popBack() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    private func selectedOptions(in tableView: UITableView) -> [String] {
+        guard let indexPaths = tableView.indexPathsForSelectedRows else { return [] }
+        
+        return indexPaths.map { data[$0.row] }
     }
 }
 
@@ -69,5 +80,11 @@ extension DetailViewController: UITableViewDataSource {
         cell.contentConfiguration = content
         
         return cell
+    }
+}
+
+extension DetailViewController: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selection?(selectedOptions(in: tableView))
     }
 }
